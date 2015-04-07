@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 
 /**
@@ -37,17 +38,20 @@ public class ContactsFragment extends Fragment {
 
         String[] columns = {ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
-        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                columns, null, null, null);
-        cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
-            String number = cursor.getString(0);
-            String name = cursor.getString(1);
-            Log.d(TAG, name +" "+number);
-            cursor.moveToNext();
-        }
-        cursor.close();
 
+        int[] ids = {R.id.number, R.id.name};
+
+        Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone._ID,ContactsContract.CommonDataKinds.Phone.NUMBER,
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME}, null, null, null);
+
+        listView.setAdapter(new SimpleCursorAdapter(
+                getActivity(),
+                R.layout.contact_list_item,
+                cursor,
+                columns,
+                ids,
+                0));
 
         return v;
     }
