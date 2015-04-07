@@ -33,12 +33,14 @@ public class ContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_contacts,null);
 
+        String[] columns = {ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
         Cursor cursor = getActivity().getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                null, null, null, null);
+                columns, null, null, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
-            String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-            String name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            String number = cursor.getString(0);
+            String name = cursor.getString(1);
             Log.d(TAG, name +" "+number);
             cursor.moveToNext();
         }
