@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.parse.LogInCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -52,7 +53,7 @@ public class SignInActivity extends ActionBarActivity {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
-                            Log.d(TAG, "SUCCESS!!!");
+                            SignInActivity.this.finish();
                         } else {
                             Log.d(TAG, "FAILED");
                         }
@@ -60,6 +61,26 @@ public class SignInActivity extends ActionBarActivity {
                 });
             }
         });
+
+        Button logInButton = (Button)findViewById(R.id.log_in_button);
+        logInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser.logInInBackground(mUserNumber.getText().toString(),
+                        mPassword.getText().toString(),
+                        new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                if (e == null) {
+                                    SignInActivity.this.finish();
+                                } else {
+                                    Log.d(TAG, "FAILED");
+                                }
+                            }
+                        });
+            }
+        });
+
     }
 
 
