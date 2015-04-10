@@ -35,7 +35,7 @@ import java.util.List;
  * to handle interaction events.
  */
 public class ContactsFragment extends Fragment implements
-        AdapterView.OnItemClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+        AdapterView.OnItemClickListener, ContactDataSource.Listener {
 
     private static final String TAG = "ContactsFragment";
 
@@ -55,77 +55,24 @@ public class ContactsFragment extends Fragment implements
         ListView listView = (ListView)v.findViewById(R.id.list);
         listView.setOnItemClickListener(this);
 
-        String[] columns = {ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
-
-        int[] ids = {R.id.number, R.id.name};
-
+        ContactDataSource dataSource = new ContactDataSource(getActivity(),this);
         mAdapter = new ContactAdapter(mContacts);
         listView.setAdapter(mAdapter);
 
-        getLoaderManager().initLoader(0, null,this);
+        getLoaderManager().initLoader(0, null,dataSource);
         return v;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Cursor cursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
-        cursor.moveToPosition(position);
 
-        Log.d(TAG, "Phone number is "+cursor.getString(1));
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(
-                getActivity(),
-                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                new String[]{ContactsContract.CommonDataKinds.Phone._ID,ContactsContract.CommonDataKinds.Phone.NUMBER,
-                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME},
-                null,
-                null,
-                null
-        );
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//        mCursorAdapter.swapCursor(data);
-        List<String> numbers = new ArrayList<>();
-        data.moveToFirst();
-        while(!data.isAfterLast()){
-            String phoneNumber = data.getString(1);
-            phoneNumber = phoneNumber.replaceAll("-","");
-            phoneNumber = phoneNumber.replaceAll(" ","");
-
-            numbers.add(phoneNumber);
-            data.moveToNext();
-        }
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.whereContainedIn("username",numbers);
-        query.findInBackground(new FindCallback<ParseUser>() {
-            @Override
-            public void done(List<ParseUser> parseUsers, ParseException e) {
-                if (e == null){
-                    mContacts.clear();
-                    for (ParseUser parseUser: parseUsers){
-                        Contact contact = new Contact();
-                        contact.setName((String) parseUser.get("name"));
-                        contact.setPhoneNumber(parseUser.getUsername());
-                        mContacts.add(contact);
-                    }
-                    mAdapter.notifyDataSetChanged();
-                }else{
-
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
+    public void onFetchedContacts(ArrayList<Contact> contacts) {
+        mContacts.clear();
+        mContacts.addAll(contacts);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
