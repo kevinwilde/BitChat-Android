@@ -39,6 +39,7 @@ public class ContactsFragment extends Fragment implements
 
     private Listener mListener;
     private SimpleCursorAdapter mCursorAdapter;
+    private ArrayList<Contact> mContacts = new ArrayList<>();
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -112,7 +113,13 @@ public class ContactsFragment extends Fragment implements
             @Override
             public void done(List<ParseUser> parseUsers, ParseException e) {
                 if (e == null){
-                    Log.d(TAG, "Parse users are "+parseUsers);
+                    mContacts.clear();
+                    for (ParseUser parseUser: parseUsers){
+                        Contact contact = new Contact();
+                        contact.setName((String) parseUser.get("name"));
+                        contact.setPhoneNumber(parseUser.getUsername());
+                        mContacts.add(contact);
+                    }
                 }else{
 
                 }
