@@ -16,6 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +105,19 @@ public class ContactsFragment extends Fragment implements
             numbers.add(phoneNumber);
             data.moveToNext();
         }
-        Log.d(TAG, "Numbers are "+numbers);
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereContainedIn("username",numbers);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> parseUsers, ParseException e) {
+                if (e == null){
+                    Log.d(TAG, "Parse users are "+parseUsers);
+                }else{
+
+                }
+            }
+        });
     }
 
     @Override
