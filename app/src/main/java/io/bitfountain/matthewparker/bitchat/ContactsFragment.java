@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -38,8 +40,8 @@ public class ContactsFragment extends Fragment implements
     private static final String TAG = "ContactsFragment";
 
     private Listener mListener;
-    private SimpleCursorAdapter mCursorAdapter;
     private ArrayList<Contact> mContacts = new ArrayList<>();
+    private ContactAdapter mAdapter;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -58,15 +60,8 @@ public class ContactsFragment extends Fragment implements
 
         int[] ids = {R.id.number, R.id.name};
 
-        mCursorAdapter = new SimpleCursorAdapter(
-                getActivity(),
-                R.layout.contact_list_item,
-                null,
-                columns,
-                ids,
-                0);
-
-        listView.setAdapter(mCursorAdapter);
+        mAdapter = new ContactAdapter(mContacts);
+        listView.setAdapter(mAdapter);
 
         getLoaderManager().initLoader(0, null,this);
         return v;
@@ -120,6 +115,7 @@ public class ContactsFragment extends Fragment implements
                         contact.setPhoneNumber(parseUser.getUsername());
                         mContacts.add(contact);
                     }
+                    mAdapter.notifyDataSetChanged();
                 }else{
 
                 }
@@ -129,7 +125,7 @@ public class ContactsFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mCursorAdapter.swapCursor(null);
+
     }
 
     @Override
@@ -151,6 +147,21 @@ public class ContactsFragment extends Fragment implements
 
     public interface Listener {
 
+    }
+
+    private class ContactAdapter extends ArrayAdapter<Contact>{
+        ContactAdapter(ArrayList<Contact> contacts){
+            super(getActivity(), R.layout.contact_list_item, R.id.name, contacts);
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = super.getView(position, convertView, parent);
+            Contact contact = getItem(position);
+
+            TextView nameView = (TextView)convertView.findViewById(R.id.name);
+            nameView.setText(contact.getPhoneNumber());
+            return convertView;
+        }
     }
 
 }
