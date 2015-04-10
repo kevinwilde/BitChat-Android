@@ -20,6 +20,8 @@ import java.util.List;
  * Created by matthewparker on 4/10/15.
  */
 public class ContactDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static Contact sCurrentUser;
+
     private Context mContext;
     private Listener mListener;
 
@@ -27,6 +29,16 @@ public class ContactDataSource implements LoaderManager.LoaderCallbacks<Cursor> 
         mContext = context;
         mListener = listener;
     }
+
+    public static Contact getCurrentUser(){
+        if (sCurrentUser == null && ParseUser.getCurrentUser() != null){
+            sCurrentUser = new Contact();
+            sCurrentUser.setPhoneNumber(ParseUser.getCurrentUser().getUsername());
+            sCurrentUser.setName((String)ParseUser.getCurrentUser().get("name"));
+        }
+        return sCurrentUser;
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(
