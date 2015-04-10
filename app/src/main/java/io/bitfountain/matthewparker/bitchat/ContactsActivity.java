@@ -10,7 +10,7 @@ import com.parse.Parse;
 import com.parse.ParseUser;
 
 
-public class ContactsActivity extends ActionBarActivity {
+public class ContactsActivity extends ActionBarActivity implements ContactsFragment.Listener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,11 @@ public class ContactsActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onContactSelected(Contact contact) {
+        Intent i = new Intent(this, ChatActivity.class);
+        startActivity(i);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

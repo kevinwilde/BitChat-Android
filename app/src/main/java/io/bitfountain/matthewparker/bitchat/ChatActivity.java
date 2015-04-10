@@ -20,8 +20,11 @@ public class ChatActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        ArrayList<Message> messages = new ArrayList<Message>();
+        messages.add(new Message("Hello","1800777897987"));
+
         ListView listView = (ListView)findViewById(R.id.messages_list);
-        listView.setAdapter(new MessagesAdapter(new ArrayList<Message>()));
+        listView.setAdapter(new MessagesAdapter(messages));
     }
 
 
