@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.Parse;
+import com.parse.ParseUser;
 
 
 public class ContactsActivity extends ActionBarActivity {
@@ -20,8 +21,10 @@ public class ContactsActivity extends ActionBarActivity {
 
         Parse.initialize(this, "AO48TlReePZHDSQ50twePLf19FhRM0abnUp1YxE9", "wc9Z2vmwXC25amXPKTBAqyUtJRWhXk3AXqL6sYd4");
 
-        Intent i = new Intent(this, SignInActivity.class);
-        startActivity(i);
+        if (ParseUser.getCurrentUser() == null) {
+            Intent i = new Intent(this, SignInActivity.class);
+            startActivity(i);
+        }
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new ContactsFragment())
