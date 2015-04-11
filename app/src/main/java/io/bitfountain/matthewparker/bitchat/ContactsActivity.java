@@ -35,6 +35,7 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
     @Override
     public void onContactSelected(Contact contact) {
         Intent i = new Intent(this, ChatActivity.class);
+        i.putExtra(ChatActivity.CONTACT_NUMBER,contact.getPhoneNumber());
         startActivity(i);
     }
 
