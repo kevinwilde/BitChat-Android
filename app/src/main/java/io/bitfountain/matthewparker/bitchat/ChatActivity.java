@@ -70,6 +70,11 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
+    public void onAddMessages(ArrayList<Message> messages) {
+        
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chat, menu);
