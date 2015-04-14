@@ -74,7 +74,6 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
         String newMessage = newMessageView.getText().toString();
         newMessageView.setText("");
         Message message = new Message(newMessage, ContactDataSource.getCurrentUser().getPhoneNumber());
-        mMessages.add(message);
         mAdapter.notifyDataSetChanged();
         MessageDataSource.sendMessage(message.getSender(), mRecipient, message.getText());
     }
