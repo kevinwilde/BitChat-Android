@@ -1,8 +1,10 @@
 package io.bitfountain.matthewparker.bitchat;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,17 +20,33 @@ import android.widget.TextView;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ChatActivity extends ActionBarActivity implements View.OnClickListener,
     MessageDataSource.Listener{
 
     public static final String CONTACT_NUMBER = "CONTACT_NUMBER";
+    public static final String TAG = "ChatActivity";
 
     private ArrayList<Message> mMessages;
     private MessagesAdapter mAdapter;
     private String mRecipient;
     private ListView mListView;
+    private Date mLastMessageDate;
+
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d(TAG, "Fetched new messages");
+            MessageDataSource.fetchMessagesAfter(ContactDataSource.getCurrentUser().getPhoneNumber(),
+                    mRecipient,
+                    mLastMessageDate,
+                    ChatActivity.this);
+            mHandler.postDelayed(this, 2000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +76,37 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
         Message message = new Message(newMessage, ContactDataSource.getCurrentUser().getPhoneNumber());
         mMessages.add(message);
         mAdapter.notifyDataSetChanged();
-        MessageDataSource.sendMessage(message.getSender(),mRecipient,message.getText());
+        MessageDataSource.sendMessage(message.getSender(), mRecipient, message.getText());
     }
 
     @Override
     public void onFetchedMessages(ArrayList<Message> messages) {
         mMessages.clear();
-        mMessages.addAll(messages);
-        mAdapter.notifyDataSetChanged();
-        mListView.setSelection(mMessages.size() - 1);
+        addMessages(messages);
+        mHandler.postDelayed(mRunnable,1000);
+
+
     }
 
     @Override
     public void onAddMessages(ArrayList<Message> messages) {
+        addMessages(messages);
+    }
 
+    private void addMessages(ArrayList<Message> messages){
+        mMessages.addAll(messages);
+        mAdapter.notifyDataSetChanged();
+        if (mMessages.size() > 0){
+            mListView.setSelection(mMessages.size() - 1);
+            Message message = mMessages.get(mMessages.size() - 1);
+            mLastMessageDate = message.getDate();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(mRunnable);
     }
 
     @Override
