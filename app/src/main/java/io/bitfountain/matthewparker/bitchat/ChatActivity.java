@@ -71,7 +71,7 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public void onAddMessages(ArrayList<Message> messages) {
-        
+
     }
 
     @Override

@@ -29,7 +29,8 @@ public class MessageDataSource {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 ArrayList<Message> messages = new ArrayList<Message>();
                 for (ParseObject parseObject: parseObjects){
-                    Message message = new Message((String)parseObject.get("text"),(String)parseObject.get("sender"));
+                    Message message = new Message(parseObject.getString("text"),parseObject.getString("sender"));
+                    message.setDate(parseObject.getCreatedAt());
                     messages.add(message);
                 }
                 listener.onAddMessages(messages);
@@ -45,7 +46,8 @@ public class MessageDataSource {
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 ArrayList<Message> messages = new ArrayList<Message>();
                 for (ParseObject parseObject: parseObjects){
-                    Message message = new Message((String)parseObject.get("text"),(String)parseObject.get("sender"));
+                    Message message = new Message(parseObject.getString("text"),parseObject.getString("sender"));
+                    message.setDate(parseObject.getCreatedAt());
                     messages.add(message);
                 }
                 listener.onFetchedMessages(messages);

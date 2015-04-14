@@ -1,11 +1,14 @@
 package io.bitfountain.matthewparker.bitchat;
 
+import java.util.Date;
+
 /**
  * Created by matthewparker on 4/10/15.
  */
 public class Message {
     private String mText;
     private String mSender;
+    private Date mDate;
 
     Message(String text, String sender){
         mText = text;
@@ -26,5 +29,13 @@ public class Message {
 
     public void setText(String text) {
         mText = text;
+    }
+
+    public Date getDate() {
+        return mDate;
+    }
+
+    public void setDate(Date date) {
+        mDate = date;
     }
 }
