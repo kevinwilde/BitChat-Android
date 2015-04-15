@@ -35,7 +35,7 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
     private MessagesAdapter mAdapter;
     private String mRecipient;
     private ListView mListView;
-    private Date mLastMessageDate;
+    private Date mLastMessageDate = new Date();
 
     private Handler mHandler = new Handler();
     private Runnable mRunnable = new Runnable() {

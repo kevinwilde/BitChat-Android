@@ -27,13 +27,15 @@ public class MessageDataSource {
         mainQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                ArrayList<Message> messages = new ArrayList<Message>();
-                for (ParseObject parseObject: parseObjects){
-                    Message message = new Message(parseObject.getString("text"),parseObject.getString("sender"));
-                    message.setDate(parseObject.getCreatedAt());
-                    messages.add(message);
+                if (e == null) {
+                    ArrayList<Message> messages = new ArrayList<Message>();
+                    for (ParseObject parseObject : parseObjects) {
+                        Message message = new Message(parseObject.getString("text"), parseObject.getString("sender"));
+                        message.setDate(parseObject.getCreatedAt());
+                        messages.add(message);
+                    }
+                    listener.onAddMessages(messages);
                 }
-                listener.onAddMessages(messages);
             }
         });
     }
@@ -44,13 +46,15 @@ public class MessageDataSource {
         mainQuery.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                ArrayList<Message> messages = new ArrayList<Message>();
-                for (ParseObject parseObject: parseObjects){
-                    Message message = new Message(parseObject.getString("text"),parseObject.getString("sender"));
-                    message.setDate(parseObject.getCreatedAt());
-                    messages.add(message);
+                if (e == null) {
+                    ArrayList<Message> messages = new ArrayList<Message>();
+                    for (ParseObject parseObject : parseObjects) {
+                        Message message = new Message(parseObject.getString("text"), parseObject.getString("sender"));
+                        message.setDate(parseObject.getCreatedAt());
+                        messages.add(message);
+                    }
+                    listener.onFetchedMessages(messages);
                 }
-                listener.onFetchedMessages(messages);
             }
         });
     }
