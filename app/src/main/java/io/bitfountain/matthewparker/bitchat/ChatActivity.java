@@ -1,6 +1,8 @@
 package io.bitfountain.matthewparker.bitchat;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -144,11 +146,20 @@ public class ChatActivity extends ActionBarActivity implements View.OnClickListe
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)nameView.getLayoutParams();
 
+            int sdk = Build.VERSION.SDK_INT;
             if (message.getSender().equals(ContactDataSource.getCurrentUser().getPhoneNumber())){
-                nameView.setBackground(getDrawable(R.drawable.bubble_right_green));
+                if (sdk >= Build.VERSION_CODES.JELLY_BEAN) {
+                    nameView.setBackground(getDrawable(R.drawable.bubble_right_green));
+                } else{
+                    nameView.setBackgroundDrawable(getDrawable(R.drawable.bubble_right_green));
+                }
                 layoutParams.gravity = Gravity.RIGHT;
             }else{
-                nameView.setBackground(getDrawable(R.drawable.bubble_left_gray));
+                if (sdk >= Build.VERSION_CODES.JELLY_BEAN) {
+                    nameView.setBackground(getDrawable(R.drawable.bubble_left_gray));
+                } else{
+                    nameView.setBackgroundDrawable(getDrawable(R.drawable.bubble_left_gray));
+                }
                 layoutParams.gravity = Gravity.LEFT;
             }
 
