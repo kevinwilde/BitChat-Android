@@ -19,7 +19,7 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
 
         Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "AO48TlReePZHDSQ50twePLf19FhRM0abnUp1YxE9", "wc9Z2vmwXC25amXPKTBAqyUtJRWhXk3AXqL6sYd4");
+        Parse.initialize(this);
 
         if (ContactDataSource.getCurrentUser() == null) {
             Intent i = new Intent(this, SignInActivity.class);
