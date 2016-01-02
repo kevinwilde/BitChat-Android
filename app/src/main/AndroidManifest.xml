@@ -14,10 +14,10 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.parse.APPLICATION_ID"
-            android:value="bv4LpiCCPEzUFC3ZMOz7kPh4uJ6ZKgBMrmKepAxi" />
+            android:value="" />
         <meta-data
             android:name="com.parse.CLIENT_KEY"
-            android:value="1j71Uwj2rJ7TuyrI6EXrlXbqSx2zwIuPMafeeE3s" />
+            android:value="" />
         <activity
             android:name=".ContactsActivity"
             android:label="@string/app_name" >
