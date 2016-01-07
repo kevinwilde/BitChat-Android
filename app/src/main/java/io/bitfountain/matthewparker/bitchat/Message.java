@@ -10,6 +10,10 @@ public class Message {
     private String mSender;
     private Date mDate;
 
+    Message() {
+
+    }
+
     Message(String text, String sender){
         mText = text;
         mSender = sender;

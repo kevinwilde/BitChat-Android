@@ -104,9 +104,10 @@ public class ContactsFragment extends Fragment implements
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = super.getView(position, convertView, parent);
             Contact contact = getItem(position);
-
             TextView nameView = (TextView)convertView.findViewById(R.id.name);
-            nameView.setText(contact.getPhoneNumber());
+            nameView.setText(contact.getName());
+            TextView numberView = (TextView)convertView.findViewById(R.id.number);
+            numberView.setText(contact.getPhoneNumber());
             return convertView;
         }
     }

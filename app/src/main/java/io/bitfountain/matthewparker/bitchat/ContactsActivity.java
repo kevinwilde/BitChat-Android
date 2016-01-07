@@ -17,10 +17,6 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
 
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this);
-
         if (ContactDataSource.getCurrentUser() == null) {
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
@@ -35,7 +31,8 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
     @Override
     public void onContactSelected(Contact contact) {
         Intent i = new Intent(this, ChatActivity.class);
-        i.putExtra(ChatActivity.CONTACT_NUMBER,contact.getPhoneNumber());
+        i.putExtra(ChatActivity.CONTACT_NUMBER, contact.getPhoneNumber());
+        i.putExtra(ChatActivity.CONTACT_NAME, contact.getName());
         startActivity(i);
     }
 
